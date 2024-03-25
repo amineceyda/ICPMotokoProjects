@@ -2,6 +2,10 @@
 
 The Phonebook project is a simple Motoko smart contract that acts as a phonebook, allowing users to store and retrieve contact information.
 
+## Motoko Playground Link
+
+You can try out the Phonebook project in the [Motoko Playground](https://m7sm4-2iaaa-aaaab-qabra-cai.raw.ic0.app/?tag=153066997).
+
 ## Overview
 
 The phonebook smart contract enables users to perform the following actions:
