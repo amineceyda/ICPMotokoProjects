@@ -2,6 +2,8 @@
 
 This project implements a simple token transfer functionality in the Motoko programming language. It allows users to transfer tokens between accounts using the ICRC1 Ledger Canister.
 
+Use this link to access the code: [Token Code](https://m7sm4-2iaaa-aaaab-qabra-cai.raw.ic0.app/?tag=2615151838)
+
 ## Overview
 
 The project defines an actor that facilitates token transfers between accounts. It utilizes the `icrc1_ledger_canister` canister for token transfers.
