@@ -1,59 +1,107 @@
-# phone_book
+# Phonebook
 
-Welcome to your new phone_book project and to the internet computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
+The Phonebook project is a simple Motoko smart contract that acts as a phonebook, allowing users to store and retrieve contact information.
 
-To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
+## Overview
 
-To learn more before you start working with phone_book, see the following documentation available online:
+The phonebook smart contract enables users to perform the following actions:
 
-- [Quick Start](https://internetcomputer.org/docs/current/developer-docs/setup/deploy-locally)
-- [SDK Developer Tools](https://internetcomputer.org/docs/current/developer-docs/setup/install)
-- [Motoko Programming Language Guide](https://internetcomputer.org/docs/current/motoko/main/motoko)
-- [Motoko Language Quick Reference](https://internetcomputer.org/docs/current/motoko/main/language-manual)
+- **Insert Entry**: Add a new entry to the phonebook with a name and phone number.
+- **Lookup Entry**: Search for an entry by name and retrieve the associated phone number.
 
-If you want to start working on your project right away, you might want to try the following commands:
+## Usage
 
-```bash
-cd phone_book/
-dfx help
-dfx canister --help
+### Prerequisites
+
+- Ensure you have the Motoko compiler installed.
+- Familiarize yourself with the Motoko programming language.
+
+### Smart Contract Definition
+
+The phonebook smart contract defines the following types and functions:
+
+- **Types**:
+  - `Name`: Represents the name of a contact.
+  - `Phone`: Represents the phone number of a contact.
+  - `Entry`: Represents an entry in the phonebook, consisting of a description and a phone number.
+
+- **Functions**:
+  - `insert`: Inserts a new entry into the phonebook.
+  - `lookup`: Searches for an entry in the phonebook by name and returns the associated entry.
+
+### Deploying and Interacting with the Smart Contract
+
+1. Clone the repository:
+
+   ```bash
+   git clone <repository_url>
+   ```
+
+2. Navigate to the project directory:
+
+   ```bash
+   cd phone_book
+   ```
+
+3. Compile the Motoko code:
+
+   ```bash
+   dfx build
+   ```
+
+4. Deploy the smart contract:
+
+   ```bash
+   dfx canister install --all
+   ```
+
+5. Interact with the smart contract using query and update calls:
+
+   - **Insert Entry**:
+     ```bash
+     dfx canister call <canister_id> insert '("<name>", { desc = "<description>", phone = "<phone_number>" })'
+     ```
+
+   - **Lookup Entry**:
+     ```bash
+     dfx canister call <canister_id> lookup '("<name>")'
+     ```
+
+## Example Usage
+
+Here's an example of how you can use the phonebook smart contract:
+
+```motoko
+import Phonebook "phone_book";
+
+actor Main {
+  public func main() : async {
+    let phonebookActor = Phonebook.Actor();
+
+    // Inserting a new entry
+    await phonebookActor.insert("John Doe", { desc = "Work", phone = "1234567890" });
+
+    // Looking up an entry
+    let entry = await phonebookActor.lookup("John Doe");
+    switch (entry) {
+      case (?entry) {
+        print("Phone number for John Doe (" # entry.desc # "): " # entry.phone);
+      };
+      case null {
+        print("John Doe not found in the phonebook.");
+      };
+    }
+  }
+}
 ```
 
-## Running the project locally
+## Contributing
 
-If you want to test your project locally, you can use the following commands:
+Contributions are welcome! Feel free to open issues or pull requests to suggest improvements or report bugs.
 
-```bash
-# Starts the replica, running in the background
-dfx start --background
+## License
 
-# Deploys your canisters to the replica and generates your candid interface
-dfx deploy
+This project is licensed under the [MIT License](LICENSE).
 ```
 
-Once the job completes, your application will be available at `http://localhost:4943?canisterId={asset_canister_id}`.
-
-If you have made changes to your backend canister, you can generate a new candid interface with
-
-```bash
-npm run generate
-```
-
-at any time. This is recommended before starting the frontend development server, and will be run automatically any time you run `dfx deploy`.
-
-If you are making frontend changes, you can start a development server with
-
-```bash
-npm start
-```
-
-Which will start a server at `http://localhost:8080`, proxying API requests to the replica at port 4943.
-
-### Note on frontend environment variables
-
-If you are hosting frontend code somewhere without using DFX, you may need to make one of the following adjustments to ensure your project does not fetch the root key in production:
-
-- set`DFX_NETWORK` to `ic` if you are using Webpack
-- use your own preferred method to replace `process.env.DFX_NETWORK` in the autogenerated declarations
-  - Setting `canisters -> {asset_canister_id} -> declarations -> env_override to a string` in `dfx.json` will replace `process.env.DFX_NETWORK` with the string in the autogenerated declarations
-- Write your own `createActor` constructor
+Feel free to customize any parts of this README to better suit your project's specific details or requirements.
